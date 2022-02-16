@@ -2,6 +2,9 @@ package com.sysmap.mslearningcourse.controllers;
 
 import com.sysmap.mslearningcourse.controllers.models.CreateCourseInput;
 import com.sysmap.mslearningcourse.entities.Course;
+import com.sysmap.mslearningcourse.services.CourseService;
+import com.sysmap.mslearningcourse.services.models.CreateCourseResult;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,12 +14,23 @@ import java.util.UUID;
 @RequestMapping("api/v1/course")
 public class CourseController {
 
+    private CourseService courseService;
+
+    public CourseController(
+        CourseService courseService
+    ) {
+        this.courseService = courseService;
+    }
+
     @PostMapping
-    public ResponseEntity<String> createCourse(
+    public ResponseEntity<CreateCourseResult> createCourse(
         @RequestBody
         CreateCourseInput input
     ) {
-        return null;
+        return new ResponseEntity<>(
+        this.courseService.createCourse(input),
+        HttpStatus.CREATED
+        );
     }
 
     @GetMapping("/{courseId}")
