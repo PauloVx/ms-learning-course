@@ -21,6 +21,8 @@ public class CourseService {
     }
 
     public CreateCourseResult createCourse(CreateCourseInput courseInput) {
+        if(this.courseRepository.findCourseByCourseName(courseInput.getCourseName()).isPresent()) return null;
+
         var course = new Course(
             UUID.randomUUID(),
             courseInput.getCourseName(),

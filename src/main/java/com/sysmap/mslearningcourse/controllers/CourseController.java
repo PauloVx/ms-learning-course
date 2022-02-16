@@ -27,8 +27,15 @@ public class CourseController {
         @RequestBody
         CreateCourseInput input
     ) {
+        if(input.getCourseName().length() <= 3) {
+            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+        }
+
+        var dbResult = this.courseService.createCourse(input);
+        if(dbResult == null) return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+
         return new ResponseEntity<>(
-        this.courseService.createCourse(input),
+        dbResult,
         HttpStatus.CREATED
         );
     }

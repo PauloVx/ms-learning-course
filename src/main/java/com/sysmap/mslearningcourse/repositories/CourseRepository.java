@@ -11,4 +11,5 @@ import java.util.UUID;
 public interface CourseRepository extends MongoRepository<Course, UUID> {
 
     Optional<Course> findCourseByCourseId(UUID courseId);
+    Optional<Course> findCourseByCourseName(String courseName);
 }
