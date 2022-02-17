@@ -49,11 +49,11 @@ public class CourseController {
         Optional<String> courseId
     ) {
         return courseId.map(uuid -> new ResponseEntity<>(
-                List.of(this.courseService.getOneCourse(UUID.fromString(uuid))),
-                HttpStatus.OK
+            List.of(this.courseService.getOneCourse(UUID.fromString(uuid))),
+            HttpStatus.OK
         )).orElseGet(() -> new ResponseEntity<>(
-                this.courseService.getAllCourses(),
-                HttpStatus.OK
+            this.courseService.getAllCourses(),
+            HttpStatus.OK
         ));
 
     }
