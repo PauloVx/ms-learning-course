@@ -37,8 +37,8 @@ public class CourseController {
         if(dbResult == null) return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
 
         return new ResponseEntity<>(
-        dbResult,
-        HttpStatus.CREATED
+            dbResult,
+            HttpStatus.CREATED
         );
     }
 
