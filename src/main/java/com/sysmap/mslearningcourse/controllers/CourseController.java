@@ -1,17 +1,19 @@
 package com.sysmap.mslearningcourse.controllers;
 
 import com.sysmap.mslearningcourse.controllers.models.CreateCourseInput;
-import com.sysmap.mslearningcourse.entities.Course;
 import com.sysmap.mslearningcourse.services.CourseService;
 import com.sysmap.mslearningcourse.services.models.CreateCourseResult;
+import com.sysmap.mslearningcourse.services.models.GetCourseResult;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("api/v1/course")
+@RequestMapping("api/v1")
 public class CourseController {
 
     private CourseService courseService;
@@ -22,7 +24,7 @@ public class CourseController {
         this.courseService = courseService;
     }
 
-    @PostMapping
+    @PostMapping("/course")
     public ResponseEntity<CreateCourseResult> createCourse(
         @RequestBody
         CreateCourseInput input
@@ -40,11 +42,19 @@ public class CourseController {
         );
     }
 
-    @GetMapping("/{courseId}")
-    public ResponseEntity<Course> getcourse(
-        @PathVariable
-        UUID courseId
+
+    @GetMapping({"/courses", "/courses/{courseId}"})
+    public ResponseEntity<List<GetCourseResult>> getOneCourse(
+        @PathVariable("courseId")
+        Optional<String> courseId
     ) {
-        return null;
+        return courseId.map(uuid -> new ResponseEntity<>(
+                List.of(this.courseService.getOneCourse(UUID.fromString(uuid))),
+                HttpStatus.OK
+        )).orElseGet(() -> new ResponseEntity<>(
+                this.courseService.getAllCourses(),
+                HttpStatus.OK
+        ));
+
     }
 }
